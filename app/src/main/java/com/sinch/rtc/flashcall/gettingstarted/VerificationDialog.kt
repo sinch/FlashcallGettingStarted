@@ -1,15 +1,13 @@
 package com.sinch.rtc.flashcall.gettingstarted
 
-import android.annotation.SuppressLint
 import android.app.Dialog
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
 import com.sinch.rtc.flashcall.gettingstarted.databinding.DialogVerificationBinding
-import com.sinch.verification.core.auth.AppKeyAuthorizationMethod
-import com.sinch.verification.core.auth.AuthorizationMethod
 import com.sinch.verification.core.auth.BasicAuthorizationMethod
 import com.sinch.verification.core.config.general.SinchGlobalConfig
 import com.sinch.verification.core.internal.Verification
@@ -19,14 +17,15 @@ import com.sinch.verification.flashcall.FlashCallVerificationMethod
 import com.sinch.verification.flashcall.config.FlashCallVerificationConfig
 import com.sinch.verification.flashcall.initialization.FlashCallInitializationListener
 import com.sinch.verification.flashcall.initialization.FlashCallInitializationResponseData
-import okhttp3.logging.HttpLoggingInterceptor
 import java.util.*
 
 class VerificationDialog : DialogFragment(), VerificationListener {
 
     companion object {
-        private const val APP_KEY = "ef032cd1-8a5e-43c8-bef4-b42bb8d99791"
-        private const val APP_SECRET = "YNTTH6fxE0yNbUzLrMfXLg=="
+        private val TAG = VerificationDialog::class.java.simpleName
+
+        private const val APP_KEY = "<YOUR_APP_KEY>"
+        private const val APP_SECRET = "YOUR_APP_SECRET"
         private const val PHONE_NUMBER_TAG = "phone_number"
         fun newInstance(phoneNumber: String) = VerificationDialog().apply {
             arguments = Bundle().apply { putString(PHONE_NUMBER_TAG, phoneNumber) }
@@ -44,7 +43,9 @@ class VerificationDialog : DialogFragment(), VerificationListener {
             showErrorWithMessage(t.message.orEmpty())
         }
 
-        override fun onInitiated(data: FlashCallInitializationResponseData) {}
+        override fun onInitiated(data: FlashCallInitializationResponseData) {
+            Log.d(TAG, "Verification Initiated")
+        }
     }
 
     private lateinit var verification: Verification
@@ -56,11 +57,6 @@ class VerificationDialog : DialogFragment(), VerificationListener {
             requireContext().applicationContext
         )
             .authorizationMethod(BasicAuthorizationMethod(APP_KEY, APP_SECRET))
-            .interceptors(listOf(HttpLoggingInterceptor().apply {
-                setLevel(
-                    HttpLoggingInterceptor.Level.BODY
-                )
-            }))
             .build()
 
         verification = FlashCallVerificationMethod.Builder().config(
