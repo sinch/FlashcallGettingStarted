@@ -25,7 +25,7 @@ class VerificationDialog : DialogFragment(), VerificationListener {
         private val TAG = VerificationDialog::class.java.simpleName
 
         private const val APP_KEY = "<YOUR_APP_KEY>"
-        private const val APP_SECRET = "YOUR_APP_SECRET"
+        private const val APP_SECRET = "<YOUR_APP_SECRET>"
         private const val PHONE_NUMBER_TAG = "phone_number"
         fun newInstance(phoneNumber: String) = VerificationDialog().apply {
             arguments = Bundle().apply { putString(PHONE_NUMBER_TAG, phoneNumber) }
